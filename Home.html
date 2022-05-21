@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food point</title>
+    <style>
+        #dis{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+        }
+        #dis>div{
+            margin: 10px;display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border:1px solid #cecece;
+        }
+      
+        img{
+            width: 150px;
+        }
+    </style>
+
+</head>
+<body>
+   
+   <button id="cart">
+<a href="./foodcart.html">
+GOTO CART
+</a>
+   </button>
+    <var id="dis"></var>
+</body>
+<script>
+ let cart=localStorage.getItem("cart")
+   if(cart===null){
+       localStorage.setItem("cart",JSON.stringify([]))
+   }
+hoemdata()
+async function hoemdata()
+{
+var url="https://www.themealdb.com/api/json/v1/1/categories.php"
+    try {
+        let res=await fetch(url)
+        let data=await res.json()
+        // console.log(data)
+        // console.log(data)
+        data=data.categories
+        display(data)
+        
+    
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+function display(data){
+    data.forEach(e => {
+        let card=document.createElement("div")
+        let img=document.createElement("img")
+        img.src=e.strCategoryThumb;
+        let title=document.createElement("h3")
+        title.textContent=e.strCategory;
+        let btn=document.createElement("button")
+        btn.textContent="Select catagory"
+
+        // console.log(title)
+        card.append(img,title,btn)
+        dis.append(card)
+        btn.onclick=function()
+{
+    shoecatagry(title)
+}
+    });
+}
+
+async function  shoecatagry(title){
+    let dis=document.getElementById("dis")
+    dis.innerHTML=""
+    var cag=title.textContent
+    // console.log(cag)
+ try {
+     
+     let res=await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${cag}`)
+
+     let data=await res.json()
+    //  console.log(data)
+    data=data.meals
+    discag(data)
+ } catch (error) {
+     console.log(error)
+ }
+
+
+}
+function discag(data){
+    data.forEach(e => {
+        let card=document.createElement("div")
+        let img=document.createElement("img")
+        img.src=e.strMealThumb;
+        let title=document.createElement("h3")
+        title.textContent=e.strMeal;
+        let btn=document.createElement("button")
+        btn.textContent="Select Item"
+btn.onclick=function(){
+    addtolocalsotr(e)
+}
+    //    console.log(title)
+    card.append(img,title,btn)
+    dis.append(card)
+    // body.append(dis)
+
+    });
+}
+function  addtolocalsotr(data){
+    // console.log(data)
+    // let cart=localStorage.getItem("cart")
+    let cart=JSON.parse(localStorage.getItem("cart"))
+   if(cart===null){
+       localStorage.setItem("cart",JSON.stringify([]))
+   }
+
+    cart.push(data)
+    localStorage.setItem("cart",JSON.stringify(cart))
+}
+    
+</script>
+</html>

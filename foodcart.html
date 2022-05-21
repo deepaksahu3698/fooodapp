@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fOOD CART</title>. <style>
+        img{
+               height: 100px;
+               width: 100px;
+           }
+           table,th,td{
+               border: 1px solid #cecece;
+               margin: 10px;
+               padding: 10px;
+           }
+       </style>
+</head>
+<body>
+    <h1>CART PAGE</h1>
+    <div id="cont"></div>
+
+    <script>
+        let cont=document.getElementById("cont")
+        let cart=localStorage.getItem("cart")
+        if (cart==null){
+    localStorage.setItem("cart",JSON.stringify([]))
+
+}
+function getdata(){
+    let data=JSON.parse(localStorage.getItem("cart"))
+    // console.log(data)
+    dipaly(data)
+
+}
+
+var table=document.createElement("table")
+var thead=document.createElement("thead")
+var thearow=document.createElement("tr")
+var th1=document.createElement("th")
+var th2=document.createElement("th")
+th1.textContent="Image"
+th2.textContent="item"
+thearow.append(th1,th2)
+thead.append(thearow)
+var tbody=document.createElement("tbody")
+function dipaly(data){
+
+data.forEach(e => {
+    var tr=document.createElement("tr")
+
+    var td1=document.createElement("td")
+    var prodimg=document.createElement("img")
+    prodimg.src=e.strMealThumb;
+    td1.append(prodimg)
+    var td2=document.createElement("td")
+    td2.textContent=e.strMeal
+ 
+tr.append(td1,td2)
+tbody.append(tr)
+
+});
+table.append(thead,tbody)
+cont.append(table)
+}
+getdata()
+    </script>
+</body>
+</html>
